@@ -28,6 +28,7 @@ private:
 public:
     Averager(uint32_t size);
     T push(T entry);
+    S Sum();
 };
 
 template <typename T, typename S>
@@ -61,4 +62,10 @@ T Averager<T, S>::push(T entry)
     if (_position >= _size)
         _position = 0;
     return (_sum / _count);
+}
+
+template <typename T, typename S>
+S Averager<T, S>::Sum()
+{
+    return _sum;
 }
