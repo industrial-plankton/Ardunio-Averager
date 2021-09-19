@@ -1,3 +1,5 @@
+#ifndef AVERAGER_H
+#define AVERAGER_H
 /*
 *  Copyright (C) 2020 Industrial Plankton IndustrialPlankton.com
 *  
@@ -26,13 +28,13 @@ private:
     uint8_t _size;
 
 public:
-    Averager(uint32_t size);
+    Averager(unsigned long size);
     T push(T entry);
     S Sum();
 };
 
 template <typename T, typename S>
-Averager<T, S>::Averager(uint32_t size)
+Averager<T, S>::Averager(unsigned long size)
 {
     _size = size;
     _count = 0;
@@ -69,3 +71,5 @@ S Averager<T, S>::Sum()
 {
     return _sum;
 }
+
+#endif
