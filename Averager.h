@@ -32,23 +32,23 @@ private:
     S _sum;            // _sum variable for faster mean calculation
     uint8_t _position; // _position variable for circular buffer
     uint8_t _count;
-    uint8_t _size;
+    const unsigned char _size;
 
 public:
-    Averager(unsigned long size);
+    Averager(const unsigned char _size);
     T push(T entry);
-    S Sum();
+    S Sum() const;
 };
 
 template <typename T, typename S>
-Averager<T, S>::Averager(unsigned long size)
+Averager<T, S>::Averager(const unsigned char size) : _size{size}
 {
-    _size = size;
+    // _size = size;
     _count = 0;
-    _store = (T *)malloc(sizeof(T) * size);
+    _store = (T *)malloc(sizeof(T) * _size);
     _position = 0;
     _sum = 0;
-    for (uint32_t i = 0; i < size; i++)
+    for (uint32_t i = 0; i < _size; i++)
     {
         _store[i] = 0;
     }
@@ -74,7 +74,7 @@ T Averager<T, S>::push(T entry)
 }
 
 template <typename T, typename S>
-S Averager<T, S>::Sum()
+S Averager<T, S>::Sum() const
 {
     return _sum;
 }
