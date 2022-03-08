@@ -38,6 +38,7 @@ public:
     Averager(const unsigned char _size);
     T push(T entry);
     S Sum() const;
+    T Average() const;
 };
 
 template <typename T, typename S>
@@ -77,6 +78,12 @@ template <typename T, typename S>
 S Averager<T, S>::Sum() const
 {
     return _sum;
+}
+
+template <typename T, typename S>
+T Averager<T, S>::Average() const
+{
+    return (_sum / _count);
 }
 
 #endif
