@@ -35,20 +35,17 @@ private:
     const unsigned char _size;
 
 public:
-    Averager(const unsigned char _size);
+    explicit Averager(const unsigned char _size);
     T push(T entry);
     S Sum() const;
     T Average() const;
 };
 
 template <typename T, typename S>
-Averager<T, S>::Averager(const unsigned char size) : _size{size}
+Averager<T, S>::Averager(const unsigned char size) : _sum{0}, _position{0}, _count{0}, _size{size}
 {
     // _size = size;
-    _count = 0;
     _store = (T *)malloc(sizeof(T) * _size);
-    _position = 0;
-    _sum = 0;
     for (uint32_t i = 0; i < _size; i++)
     {
         _store[i] = 0;
