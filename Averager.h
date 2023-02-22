@@ -29,13 +29,14 @@ class Averager
 {
 private:
     T *_store;
-    S _sum;            // _sum variable for faster mean calculation
-    uint8_t _position; // _position variable for circular buffer
-    uint8_t _count;
+    S _sum;                  // _sum variable for faster mean calculation
+    unsigned char _position; // _position variable for circular buffer
+    unsigned char _count;
     const unsigned char _size;
 
 public:
     explicit Averager(const unsigned char _size);
+    ~Averager();
     T push(T entry);
     S Sum() const;
     T Average() const;
@@ -50,6 +51,12 @@ Averager<T, S>::Averager(const unsigned char size) : _sum{0}, _position{0}, _cou
     {
         _store[i] = 0;
     }
+}
+
+template <typename T, typename S>
+Averager<T, S>::~Averager()
+{
+    free(_store);
 }
 
 template <typename T, typename S>
