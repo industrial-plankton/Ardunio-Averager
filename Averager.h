@@ -24,6 +24,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+#include <malloc.h>
+
 template <typename T, typename S>
 class Averager
 {
@@ -47,7 +49,7 @@ Averager<T, S>::Averager(const unsigned char size) : _sum{0}, _position{0}, _cou
 {
     // _size = size;
     _store = (T *)malloc(sizeof(T) * _size);
-    for (uint32_t i = 0; i < _size; i++)
+    for (unsigned char i = 0; i < _size; i++)
     {
         _store[i] = 0;
     }
