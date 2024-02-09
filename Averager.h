@@ -40,6 +40,7 @@ public:
     T push(T entry);
     S Sum() const;
     T Average() const;
+    void Clear();
 };
 
 template <typename T, typename S, size_t size>
@@ -78,6 +79,14 @@ T Averager<T, S, size>::Average() const
         return 0;
     }
     return (_sum / _count);
+}
+
+template <typename T, typename S, size_t size>
+void Averager<T, S, size>::Clear()
+{
+    _position = 0;
+    _sum = 0;
+    _count = 0;
 }
 
 #endif
