@@ -24,45 +24,29 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#include <malloc.h>
-
-template <typename T, typename S>
+template <typename T, typename S, size_t size>
 class Averager
 {
 private:
-    T *_store;
-    S _sum;                  // _sum variable for faster mean calculation
-    unsigned char _position; // _position variable for circular buffer
-    unsigned char _count;
+    T _store[size] = {0};
+    S _sum;                      // _sum variable for faster mean calculation
+    unsigned char _position = 0; // _position variable for circular buffer
+    unsigned char _count = 0;
     const unsigned char _size;
 
 public:
-    explicit Averager(const unsigned char _size);
-    ~Averager();
+    Averager();
+    ~Averager(){};
     T push(T entry);
     S Sum() const;
     T Average() const;
 };
 
-template <typename T, typename S>
-Averager<T, S>::Averager(const unsigned char size) : _sum{0}, _position{0}, _count{0}, _size{size}
-{
-    // _size = size;
-    _store = (T *)malloc(sizeof(T) * _size);
-    for (unsigned char i = 0; i < _size; i++)
-    {
-        _store[i] = 0;
-    }
-}
+template <typename T, typename S, size_t size>
+Averager<T, S, size>::Averager() : _sum{0}, _size{size} {}
 
-template <typename T, typename S>
-Averager<T, S>::~Averager()
-{
-    free(_store);
-}
-
-template <typename T, typename S>
-T Averager<T, S>::push(T entry)
+template <typename T, typename S, size_t size>
+T Averager<T, S, size>::push(T entry)
 {
     if (_count < _size)
     {
@@ -80,15 +64,19 @@ T Averager<T, S>::push(T entry)
     return (_sum / _count);
 }
 
-template <typename T, typename S>
-S Averager<T, S>::Sum() const
+template <typename T, typename S, size_t size>
+S Averager<T, S, size>::Sum() const
 {
     return _sum;
 }
 
-template <typename T, typename S>
-T Averager<T, S>::Average() const
+template <typename T, typename S, size_t size>
+T Averager<T, S, size>::Average() const
 {
+    if (_count == 0)
+    {
+        return 0;
+    }
     return (_sum / _count);
 }
 
