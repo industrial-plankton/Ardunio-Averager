@@ -24,7 +24,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 class Averager
 {
 private:
@@ -43,10 +43,10 @@ public:
     void Clear();
 };
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 Averager<T, S, size>::Averager() : _sum{0}, _size{size} {}
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 T Averager<T, S, size>::push(T entry)
 {
     if (_count < _size)
@@ -65,13 +65,13 @@ T Averager<T, S, size>::push(T entry)
     return (_sum / _count);
 }
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 S Averager<T, S, size>::Sum() const
 {
     return _sum;
 }
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 T Averager<T, S, size>::Average() const
 {
     if (_count == 0)
@@ -81,7 +81,7 @@ T Averager<T, S, size>::Average() const
     return (_sum / _count);
 }
 
-template <typename T, typename S, size_t size>
+template <typename T, typename S, unsigned int size>
 void Averager<T, S, size>::Clear()
 {
     _position = 0;
