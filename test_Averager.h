@@ -3,7 +3,7 @@
 
 void testAverager()
 {
-    Averager<int, long> TestAverager(10);
+    Averager<int, long, 10> TestAverager;
     TEST_ASSERT_EQUAL(0, TestAverager.Average());
     for (int i = 0; i < 20; ++i)
     {
