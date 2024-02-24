@@ -33,11 +33,13 @@ private:
     unsigned char _position = 0; // _position variable for circular buffer
     unsigned char _count = 0;
     const unsigned char _size;
+    mutable T average;
+    mutable bool AverageCached = false;
 
 public:
     Averager();
     ~Averager(){};
-    T push(T entry);
+    void push(T entry);
     S Sum() const;
     T Average() const;
     void Clear();
@@ -47,8 +49,9 @@ template <typename T, typename S, unsigned int size>
 Averager<T, S, size>::Averager() : _sum{0}, _size{size} {}
 
 template <typename T, typename S, unsigned int size>
-T Averager<T, S, size>::push(T entry)
+void Averager<T, S, size>::push(T entry)
 {
+    AverageCached = false;
     if (_count < _size)
     {
         _count++;
@@ -59,10 +62,7 @@ T Averager<T, S, size>::push(T entry)
     }
     _store[_position] = entry;
     _sum += entry;
-    _position += 1;
-    if (_position >= _size)
-        _position = 0;
-    return (_sum / _count);
+    _position = (_position + 1) % _size; // Use modulo to handle wrap-around
 }
 
 template <typename T, typename S, unsigned int size>
@@ -78,12 +78,18 @@ T Averager<T, S, size>::Average() const
     {
         return 0;
     }
-    return (_sum / _count);
+    if (!AverageCached)
+    {
+        average = _sum / _count;
+        AverageCached = true;
+    }
+    return average;
 }
 
 template <typename T, typename S, unsigned int size>
 void Averager<T, S, size>::Clear()
 {
+    AverageCached = false;
     _position = 0;
     _sum = 0;
     _count = 0;

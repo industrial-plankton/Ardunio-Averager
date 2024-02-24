@@ -7,7 +7,7 @@ void testAverager()
     TEST_ASSERT_EQUAL(0, TestAverager.Average());
     for (int i = 0; i < 20; ++i)
     {
-        TEST_ASSERT_EQUAL(5, TestAverager.push(5));
+        TestAverager.push(5);
         TEST_ASSERT_EQUAL(5, TestAverager.Average());
     }
     TEST_ASSERT_EQUAL(50, TestAverager.Sum());
