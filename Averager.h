@@ -42,6 +42,7 @@ public:
     void push(T entry);
     S Sum() const;
     T Average() const;
+    T SectionAverage(uint8_t sectionSelect, uint8_t numerOfSections) const;
     void Clear();
 };
 
@@ -84,6 +85,28 @@ T Averager<T, S, size>::Average() const
         AverageCached = true;
     }
     return average;
+}
+
+// Returns an average of a section of the rolling average buffer. sectionSelect is the index starting from 0, must be < numerOfSections. Assumes size is divisible by numerOfSections.
+// Ex: SectionAverage(0, 4) will return the average of the first quarter of the buffer
+template <typename T, typename S, unsigned int size>
+T Averager<T, S, size>::SectionAverage(uint8_t sectionSelect, uint8_t numerOfSections) const
+{
+    if (_count == 0 || sectionSelect > numerOfSections)
+    {
+        return 0;
+    }
+    S this_sum = 0;
+    unsigned int sectionSize = _count / numerOfSections;
+    unsigned int sectionSelectPosition = _count < size ? sectionSize * sectionSelect : (_position + 1 + sectionSize * sectionSelect) % _size;
+
+    for (int i = 0; i < sectionSize; i++)
+    {
+        this_sum += _store[sectionSelectPosition];
+        sectionSelectPosition = (sectionSelectPosition + 1) % _size; // Use modulo to handle wrap-around
+    }
+
+    return this_sum / sectionSize;
 }
 
 template <typename T, typename S, unsigned int size>
