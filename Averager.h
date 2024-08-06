@@ -39,7 +39,7 @@ private:
 
 public:
     Averager();
-    ~Averager(){};
+    ~Averager() {};
     void push(T entry);
     S Sum() const;
     T Average() const;
@@ -93,7 +93,7 @@ T Averager<T, S, size>::Average() const
 template <typename T, typename S, unsigned int size>
 T Averager<T, S, size>::SectionAverage(uint8_t sectionSelect, uint8_t numerOfSections) const
 {
-    if (_count == 0 || sectionSelect > numerOfSections)
+    if (_count == 0 || numerOfSections == 0 || _count < numerOfSections || sectionSelect > numerOfSections)
     {
         return 0;
     }
@@ -101,7 +101,7 @@ T Averager<T, S, size>::SectionAverage(uint8_t sectionSelect, uint8_t numerOfSec
     unsigned int sectionSize = _count / numerOfSections;
     unsigned int sectionSelectPosition = _count < size ? sectionSize * sectionSelect : (_position + 1 + sectionSize * sectionSelect) % _size;
 
-    for (int i = 0; i < sectionSize; i++)
+    for (unsigned int i = 0; i < sectionSize; i++)
     {
         this_sum += _store[sectionSelectPosition];
         sectionSelectPosition = (sectionSelectPosition + 1) % _size; // Use modulo to handle wrap-around
