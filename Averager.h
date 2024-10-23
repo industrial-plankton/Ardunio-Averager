@@ -30,10 +30,10 @@ class Averager
 {
 private:
     T _store[size] = {0};
-    S _sum;                      // _sum variable for faster mean calculation
-    unsigned char _position = 0; // _position variable for circular buffer
-    unsigned char _count = 0;
-    const unsigned char _size;
+    S _sum;                     // _sum variable for faster mean calculation
+    unsigned int _position = 0; // _position variable for circular buffer
+    unsigned int _count = 0;
+    const unsigned int _size;
     mutable T average;
     mutable bool AverageCached = false;
 
