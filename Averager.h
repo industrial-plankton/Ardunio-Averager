@@ -33,7 +33,6 @@ private:
     S _sum;                     // _sum variable for faster mean calculation
     unsigned int _position = 0; // _position variable for circular buffer
     unsigned int _count = 0;
-    const unsigned int _size;
     mutable T average;
     mutable bool AverageCached = false;
 
@@ -48,13 +47,13 @@ public:
 };
 
 template <typename T, typename S, unsigned int size>
-Averager<T, S, size>::Averager() : _sum{0}, _size{size} {}
+Averager<T, S, size>::Averager() : _sum{0} {}
 
 template <typename T, typename S, unsigned int size>
 void Averager<T, S, size>::push(T entry)
 {
     AverageCached = false;
-    if (_count < _size)
+    if (_count < size)
     {
         _count++;
     }
@@ -64,7 +63,7 @@ void Averager<T, S, size>::push(T entry)
     }
     _store[_position] = entry;
     _sum += entry;
-    _position = (_position + 1) % _size; // Use modulo to handle wrap-around
+    _position = (_position + 1) % size; // Use modulo to handle wrap-around
 }
 
 template <typename T, typename S, unsigned int size>
@@ -99,12 +98,12 @@ T Averager<T, S, size>::SectionAverage(uint8_t sectionSelect, uint8_t numerOfSec
     }
     S this_sum = 0;
     unsigned int sectionSize = _count / numerOfSections;
-    unsigned int sectionSelectPosition = _count < size ? sectionSize * sectionSelect : (_position + 1 + sectionSize * sectionSelect) % _size;
+    unsigned int sectionSelectPosition = _count < size ? sectionSize * sectionSelect : (_position + 1 + sectionSize * sectionSelect) % size;
 
     for (unsigned int i = 0; i < sectionSize; i++)
     {
         this_sum += _store[sectionSelectPosition];
-        sectionSelectPosition = (sectionSelectPosition + 1) % _size; // Use modulo to handle wrap-around
+        sectionSelectPosition = (sectionSelectPosition + 1) % size; // Use modulo to handle wrap-around
     }
 
     return this_sum / sectionSize;
