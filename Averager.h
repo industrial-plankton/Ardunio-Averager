@@ -33,7 +33,7 @@ private:
     S _sum;                     // _sum variable for faster mean calculation
     unsigned int _position = 0; // _position variable for circular buffer
     unsigned int _count = 0;
-    mutable T average;
+    mutable T average = 0;
     mutable bool AverageCached = false;
 
 public:
